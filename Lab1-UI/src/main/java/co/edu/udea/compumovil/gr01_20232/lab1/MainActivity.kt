@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun showDatePicker(context: Context){
+fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
 
     val year: Int
     val month: Int
@@ -83,11 +83,12 @@ fun showDatePicker(context: Context){
     day = calendar.get(Calendar.DAY_OF_MONTH)
     calendar.time = Date()
 
-    val date = remember { mutableStateOf("") }
+    val formattedDate = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/$month/$year"
+            val formattedDate = "${dayOfMonth}/${month + 1}/${year}" // Se suma 1 al mes porque en Calendar, enero es 0
+            onDateSelected(formattedDate) // Llama a la función de retorno con la fecha seleccionada
         }, year, month, day
     )
 
@@ -104,7 +105,7 @@ fun showDatePicker(context: Context){
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Text(text = "Fecha de nacimiento: ${date.value}")
+        Text(text = "Fecha de nacimiento: ${formattedDate.value}")
         Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
@@ -118,13 +119,9 @@ fun showDatePicker(context: Context){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EscolaridadDropdownMenu() {
+fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
     var isExpanded by remember {
         mutableStateOf(false)
-    }
-
-    var escolaridad by remember {
-        mutableStateOf("")
     }
 
     ExposedDropdownMenuBox(
@@ -133,6 +130,9 @@ fun EscolaridadDropdownMenu() {
             isExpanded = newValue
         }
     ) {
+        var escolaridad by remember {
+            mutableStateOf("")
+        }
 
         TextField(
             value = escolaridad,
@@ -160,6 +160,7 @@ fun EscolaridadDropdownMenu() {
                 },
                 onClick = {
                     escolaridad = "Primaria"
+                    onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }
             )
@@ -169,6 +170,7 @@ fun EscolaridadDropdownMenu() {
                 },
                 onClick = {
                     escolaridad = "Secundaria"
+                    onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }
             )
@@ -178,6 +180,7 @@ fun EscolaridadDropdownMenu() {
                 },
                 onClick = {
                     escolaridad = "Universidad"
+                    onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }
             )
