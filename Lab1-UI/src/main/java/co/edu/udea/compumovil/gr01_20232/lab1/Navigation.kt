@@ -39,6 +39,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import android.content.Intent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowCircleLeft
+import androidx.compose.material3.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+
+
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -78,7 +87,7 @@ fun Screen1(navController: NavHostController) {
                     ),
                     title = {
                         Text(
-                            text = "Información de contacto",
+                            text = "Información personal",
                             color = Color.White
                         )
                     },
@@ -191,6 +200,7 @@ fun Screen1(navController: NavHostController) {
                 EscolaridadDropdownMenu()
             }
             Row(
+
                 modifier = Modifier
                     .fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -199,7 +209,7 @@ fun Screen1(navController: NavHostController) {
                 Text(
                     text = "Siguiente",
                     modifier = Modifier
-                        .clickable { navController.navigate("pantalla2") }
+                    .clickable { navController.navigate("pantalla2") }
                 )
             }
 
@@ -209,15 +219,49 @@ fun Screen1(navController: NavHostController) {
 }
 
 
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen2(navController: NavHostController){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Green)
-    ){
-        Text(text = "Pantalla 2", modifier = Modifier.align(Alignment.Center).clickable{navController.navigate("pantalla3")})
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Column {
+            TopAppBar(
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "Información de contacto",
+                        color = Color.White
+                    )
+                },
+                //Boton de Topbar para regresar a pantalla 1
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate("pantalla1")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "Flecha hacia atras",
+                            tint = MaterialTheme.colorScheme.inversePrimary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            )
+            //Contenido en el Activity ContactDataActivity
+            ContactDataScreen()
+        }
     }
 }
+
 
 @Composable
 fun Screen3(navController: NavHostController){
