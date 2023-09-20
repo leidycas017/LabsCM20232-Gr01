@@ -19,11 +19,13 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -305,18 +307,46 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen2(navController: NavHostController){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Green)
-    ){
-        Text(text = "Pantalla 2", modifier = Modifier
-            .align(Alignment.Center)
-            .clickable { navController.navigate("pantalla3") })
+fun Screen2(navController: NavHostController) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Column {
+            TopAppBar(
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "Información de contacto",
+                        color = Color.White
+                    )
+                },
+                //Boton de Topbar para regresar a pantalla 1
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate("pantalla1")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "Flecha hacia atras",
+                            tint = MaterialTheme.colorScheme.inversePrimary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                }
+            )
+            //Contenido en el Activity ContactDataActivity
+            ContactDataScreen()
+        }
     }
 }
-
 @Composable
 fun Screen3(navController: NavHostController){
     Box(modifier = Modifier
