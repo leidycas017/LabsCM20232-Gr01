@@ -57,6 +57,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -111,7 +113,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                 ),
                 title = {
                     Text(
-                        text = "Información de contacto",
+                        text = stringResource(id = R.string.contactinfo),
                         color = Color.White
                     )
                 },
@@ -132,25 +134,25 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     item {
-                        LabeledTextField("Nombre", "*") { nombre = it }
+                        LabeledTextField(stringResource(id = R.string.name), "*") { nombre = it }
                     }
                     item {
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                     item {
-                        LabeledTextField("Apellido", "*") {  apellido = it }
+                        LabeledTextField(stringResource(id = R.string.lastname), "*") {  apellido = it }
                     }
                 }
             }
         } else {
             item {
-                LabeledTextField("Nombre", "*") { nombre = it}
+                LabeledTextField(stringResource(id = R.string.name), "*") { nombre = it}
             }
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
             item {
-                LabeledTextField("Apellido", "*") {apellido = it }
+                LabeledTextField(stringResource(id = R.string.lastname), "*") {apellido = it }
             }
         }
 
@@ -163,14 +165,14 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text("Sexo:")
+                Text(stringResource(id = R.string.gender)+" :")
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 RadioButtonRow(
-                    options = listOf("Masculino", "Femenino"),
-                    onOptionSelected = { selectedSex = if (it == "Masculino") Sex.MALE else Sex.FEMALE },
-                    selectedOption = if (selectedSex == Sex.MALE) "Masculino" else "Femenino"
+                    options = listOf(stringResource(id = R.string.male), stringResource(id = R.string.female)),
+                    onOptionSelected = { selectedSex = if (it == "Masculino"||it == "Male") Sex.MALE else Sex.FEMALE },
+                    selectedOption = if (selectedSex == Sex.MALE) stringResource(id = R.string.male) else stringResource(id = R.string.female)
                 )
             }
         }
@@ -231,7 +233,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text(text = "Siguiente")
+                Text(text = stringResource(id = R.string.next))
             }
         }
     }
@@ -352,7 +354,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                 ),
                 title = {
                     Text(
-                        text = "Información de contacto",
+                        text = stringResource(id = R.string.contactinfo),
                         color = Color.White
                     )
                 },
