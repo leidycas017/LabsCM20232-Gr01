@@ -27,6 +27,7 @@ import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
+import androidx.navigation.NavHostController
 
 val Paises = listOf(
     "Argentina",
@@ -63,7 +64,7 @@ class ContactDataActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ContactDataScreen()
+            //ContactDataScreen(navController: NavHostController)
         }
     }
 }
@@ -184,17 +185,20 @@ fun ContactDataScreen() {
             Button(
                 onClick = {
                     // aqui se recuperaran los datos para imprimir en el logcat.
+
+                    // Asigna los valores de los campos al mapa de datos
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
                 Text(text = "Finalizar", color = Color.White)
+
             }
         }
 
     }
-
 }
 
 @Composable

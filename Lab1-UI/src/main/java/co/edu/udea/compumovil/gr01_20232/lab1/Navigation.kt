@@ -21,7 +21,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Book
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.LocationCity
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -57,20 +63,32 @@ import androidx.navigation.compose.rememberNavController
 fun Screen1Preview() {
     val navController = rememberNavController()
     Scaffold {
-        Screen1(navController = navController)
+        //Screen1(navController = navController)
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun Screen1PreviewPreview() {
-    Screen1Preview()
+    //Screen1Preview()
 }
+
+data class InformacionContacto(
+    var nombre: String?, var apellido: String?,
+    var sexo: String?, var fechaNacimiento: String?,
+    var grado: String?, var telefono: String?,
+    var direccion: String?, var email: String?,
+    var ciudad:String?, var pais:String?)
+
+
+val informacionContacto = InformacionContacto(
+    nombre = "", apellido = "", sexo = "", fechaNacimiento ="",
+    grado = "", telefono = "", direccion= "", email="", ciudad = "", pais = "")
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen1(navController: NavHostController) {
+fun Screen1(informacion: InformacionContacto, navController: NavHostController) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val context = LocalContext.current
@@ -217,6 +235,11 @@ fun Screen1(navController: NavHostController) {
             }
         }
     }
+    informacion.nombre = nombre
+    informacion.apellido = apellido
+    informacion.sexo = selectedSex.toString()
+    informacion.fechaNacimiento = fechaNacimiento
+    informacion.grado = escolaridadSeleccionada
 }
 
 
@@ -309,7 +332,14 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen2(navController: NavHostController) {
+fun Screen2(informacion: InformacionContacto, navController: NavHostController) {
+    var countryText by remember { mutableStateOf("") }
+    var cityText by remember { mutableStateOf("") }
+
+    // Estado para almacenar las sugerencias de países y ciudades
+    var suggestedCountries by remember { mutableStateOf(emptyList<String>()) }
+    var suggestedCities by remember { mutableStateOf(emptyList<String>()) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -342,17 +372,216 @@ fun Screen2(navController: NavHostController) {
                     }
                 }
             )
-            //Contenido en el Activity ContactDataActivity
-            ContactDataScreen()
+
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    //Campo de texto Telefono
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Phone,
+                            contentDescription = "Icono de telefono",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ContactField(label = "Teléfono", keyboardType = KeyboardType.Phone)
+                    }
+                    //Campo de texto Direccion
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.LocationOn,
+                            contentDescription = "Icono de ubicacion",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ContactField(label = "Dirección", keyboardType = KeyboardType.Text, showSuggestions = false)
+                    }
+                    //Campo de texto Email
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Email,
+                            contentDescription = "Icono de Email",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        ContactField(label = "Email", keyboardType = KeyboardType.Email)
+                    }
+                    //Campo de texto Paises
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Map,
+                            contentDescription = "Icono de paises",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.align(Alignment.CenterVertically)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        //Funcion de autocompletado con lista Paises
+                        CAutocomplete(
+                            cname = "Pais",
+                            cText = countryText,
+                            onCTextChanged = { newText ->
+                                countryText = newText
+
+                                // Filtra las sugerencias basadas en la entrada de texto
+                                suggestedCountries = Paises.filter { country ->
+                                    country.contains(newText, ignoreCase = true)
+                                }
+                            },
+                            suggestedC = suggestedCountries
+                        )
+                    }
+                    //Campo de texto Ciudades
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.LocationCity,
+                            contentDescription = "Icono de ciudad",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.align(Alignment.CenterVertically)
+
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        //Funcion de autocompletado con lista Ciudades
+                        CAutocomplete(
+                            cname = "Ciudad",
+                            cText = cityText,
+                            onCTextChanged = { newTxt ->
+                                cityText = newTxt
+
+                                // Filtra las sugerencias basadas en la entrada de texto
+                                suggestedCities = Ciudades.filter { city ->
+                                    city.contains(newTxt, ignoreCase = true)
+                                }
+                            },
+                            suggestedC = suggestedCities
+                        )
+                    }
+                    //Boton Finalizar
+                    Button(
+                        onClick = {
+                            navController.navigate("pantalla3")
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(text = "Finalizar", color = Color.White)
+
+                    }
+                }
+
+            }
+
         }
     }
+    informacion.ciudad = cityText
+    informacion.pais = countryText
 }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Screen3(navController: NavHostController){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Magenta)
-    ){
-        Text(text = "Pantalla 3", modifier = Modifier.align(Alignment.Center))
-    }
+fun Screen3(informacion: InformacionContacto, navController: NavHostController){
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        item {
+            TopAppBar(
+                // Customize Colors here
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text(
+                        text = "Datos ingresados",
+                        color = Color.White
+                    )
+                },
+            )
+        }
+
+
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Nombre: ${informacion.nombre}")
+                }
+            }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Text(text = "Apellido: ${informacion.apellido}")
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Text(text = "Sexo: ${informacion.sexo}")
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Text(text = "Fecha de nacimiento: ${informacion.fechaNacimiento}")
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Text(text = "Grado escolaridad: ${informacion.grado}")
+        }
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Text(text = "País: ${informacion.pais}")
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        item {
+            Text(text = "Ciudad: ${informacion.ciudad}")
+        }
+
+
+        }
+
 }

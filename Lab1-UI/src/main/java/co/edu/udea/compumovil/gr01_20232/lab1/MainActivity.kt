@@ -55,10 +55,15 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navigationController = rememberNavController()
+                    val informacionContacto = InformacionContacto(
+                        nombre = "", apellido = "", sexo = "", fechaNacimiento ="",
+                        grado = "", telefono = "", direccion= "", email="", ciudad = "", pais = "")
+
                     NavHost(navController = navigationController, startDestination = "pantalla1"){
-                        composable("pantalla1"){ Screen1(navigationController) }
-                        composable("pantalla2"){ Screen2(navigationController) }
-                        composable("pantalla3"){ Screen3(navigationController) }
+
+                        composable("pantalla1"){ Screen1(informacion = informacionContacto, navigationController) }
+                        composable("pantalla2"){ Screen2(informacion = informacionContacto, navigationController) }
+                        composable("pantalla3"){ Screen3(informacion = informacionContacto, navigationController) }
                     }
                 }
             }
