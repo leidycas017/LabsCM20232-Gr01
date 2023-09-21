@@ -30,6 +30,7 @@ import androidx.compose.material.icons.rounded.Phone
 import androidx.navigation.NavHostController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 
 val Paises = listOf(
@@ -67,7 +68,7 @@ class ContactDataActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //ContactDataScreen(navController: NavHostController)
+            ContactDataScreen()
         }
     }
 }
@@ -206,7 +207,7 @@ fun ContactDataScreen() {
 @Composable
 //formato campos de texto
 fun ContactField(label: String, keyboardType: KeyboardType, showSuggestions: Boolean = true) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf("") }
 
     TextField(
         modifier = Modifier

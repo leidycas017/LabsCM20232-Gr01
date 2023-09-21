@@ -45,6 +45,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +96,7 @@ fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
     day = calendar.get(Calendar.DAY_OF_MONTH)
     calendar.time = Date()
 
-    val formattedDate = remember { mutableStateOf("") }
+    val formattedDate = rememberSaveable { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
@@ -132,7 +133,7 @@ fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
-    var isExpanded by remember {
+    var isExpanded by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -142,7 +143,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
             isExpanded = newValue
         }
     ) {
-        var escolaridad by remember {
+        var escolaridad by rememberSaveable {
             mutableStateOf("")
         }
 

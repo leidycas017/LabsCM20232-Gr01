@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -86,22 +87,17 @@ data class InformacionContacto(
     var ciudad:String?, var pais:String?)
 
 
-val informacionContacto = InformacionContacto(
-    nombre = "", apellido = "", sexo = "", fechaNacimiento ="",
-    grado = "", telefono = "", direccion= "", email="", ciudad = "", pais = "")
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen1(informacion: InformacionContacto, navController: NavHostController) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val context = LocalContext.current
-    var selectedSex by remember { mutableStateOf<Sex?>(null) }
-    var escolaridadSeleccionada by remember { mutableStateOf("") }
-    var fechaNacimiento by remember { mutableStateOf("") }
-    var nombre by remember { mutableStateOf("") }
-    var apellido by remember { mutableStateOf("") }
+    var selectedSex by rememberSaveable { mutableStateOf<Sex?>(null) }
+    var escolaridadSeleccionada by rememberSaveable { mutableStateOf("") }
+    var fechaNacimiento by rememberSaveable { mutableStateOf("") }
+    var nombre by rememberSaveable { mutableStateOf("") }
+    var apellido by rememberSaveable{ mutableStateOf("") }
 
     LazyColumn(
         modifier = Modifier
@@ -267,7 +263,7 @@ fun printContactInformation(nombre: String, apellido: String, sexo: Sex?, fechaN
 
 @Composable
 private fun LabeledTextField(label: String, requiredSymbol: String, onValueChange: (String) -> Unit) {
-    var text by remember { mutableStateOf("") }
+    var text by rememberSaveable { mutableStateOf("") }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -354,12 +350,12 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
 fun Screen2(informacion: InformacionContacto, navController: NavHostController) {
 
     // Estado para el texto del campo de países y de ciudad
-    var countryText by remember { mutableStateOf("") }
-    var cityText by remember { mutableStateOf("") }
+    var countryText by rememberSaveable { mutableStateOf("") }
+    var cityText by rememberSaveable { mutableStateOf("") }
 
     // Estado para almacenar las sugerencias de países y ciudades
-    var suggestedCountries by remember { mutableStateOf(emptyList<String>()) }
-    var suggestedCities by remember { mutableStateOf(emptyList<String>()) }
+    var suggestedCountries by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    var suggestedCities by rememberSaveable { mutableStateOf(emptyList<String>()) }
 
     Box(
         modifier = Modifier
