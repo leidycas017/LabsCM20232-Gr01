@@ -20,10 +20,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.BedroomBaby
 import androidx.compose.material.icons.rounded.Book
 import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Female
 import androidx.compose.material.icons.rounded.LocationCity
 import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Male
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
@@ -310,11 +313,25 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        Spacer(modifier = Modifier.width(8.dp))
+        Icon(
+            imageVector = Icons.Rounded.Female,
+            contentDescription = "Icono de persona",
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Icon(
+            imageVector = Icons.Rounded.Male,
+            contentDescription = "Icono de persona",
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
         options.forEach { option ->
             Row(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 RadioButton(
                     selected = selectedOption == option,
@@ -335,6 +352,8 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen2(informacion: InformacionContacto, navController: NavHostController) {
+
+    // Estado para el texto del campo de países y de ciudad
     var countryText by remember { mutableStateOf("") }
     var cityText by remember { mutableStateOf("") }
 
@@ -374,7 +393,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                     }
                 }
             )
-
+            //Contenido en el Activity ContactDataActivity
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
@@ -395,7 +414,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        ContactField(label = "Teléfono", keyboardType = KeyboardType.Phone)
+                        ContactField(label = stringResource(id = R.string.phone), keyboardType = KeyboardType.Phone)
                     }
                     //Campo de texto Direccion
                     Row(
@@ -408,7 +427,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        ContactField(label = "Dirección", keyboardType = KeyboardType.Text, showSuggestions = false)
+                        ContactField(label = stringResource(id = R.string.address), keyboardType = KeyboardType.Text, showSuggestions = false)
                     }
                     //Campo de texto Email
                     Row(
@@ -421,7 +440,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        ContactField(label = "Email", keyboardType = KeyboardType.Email)
+                        ContactField(label = stringResource(id = R.string.email), keyboardType = KeyboardType.Email)
                     }
                     //Campo de texto Paises
                     Row(
@@ -437,7 +456,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                         Spacer(modifier = Modifier.width(8.dp))
                         //Funcion de autocompletado con lista Paises
                         CAutocomplete(
-                            cname = "Pais",
+                            cname = stringResource(id = R.string.country),
                             cText = countryText,
                             onCTextChanged = { newText ->
                                 countryText = newText
@@ -465,7 +484,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                         Spacer(modifier = Modifier.width(8.dp))
                         //Funcion de autocompletado con lista Ciudades
                         CAutocomplete(
-                            cname = "Ciudad",
+                            cname = stringResource(id = R.string.city),
                             cText = cityText,
                             onCTextChanged = { newTxt ->
                                 cityText = newTxt
@@ -481,21 +500,25 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                     //Boton Finalizar
                     Button(
                         onClick = {
+                            // aqui se recuperaran los datos para imprimir en el logcat.
+
+                            // Asigna los valores de los campos al mapa de datos
                             navController.navigate("pantalla3")
+
                         },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
                     ) {
-                        Text(text = "Finalizar", color = Color.White)
-
+                        Text(text = stringResource(id = R.string.submit), color = Color.White)
                     }
                 }
 
             }
-
         }
     }
+
+
     informacion.ciudad = cityText
     informacion.pais = countryText
 }
@@ -505,85 +528,103 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
 @Composable
 fun Screen3(informacion: InformacionContacto, navController: NavHostController){
 
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color.White)
     ) {
-        item {
+        Column {
             TopAppBar(
-                // Customize Colors here
                 colors = TopAppBarDefaults.smallTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
                     Text(
-                        text = "Datos ingresados",
+                        text = stringResource(id = R.string.Information),
                         color = Color.White
                     )
                 },
-            )
-        }
-
-
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Nombre: ${informacion.nombre}")
+                //Boton de Topbar para regresar a pantalla 1
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate("pantalla1")
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.ArrowBack,
+                            contentDescription = "Flecha hacia atras",
+                            tint = MaterialTheme.colorScheme.inversePrimary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
+            )
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "${stringResource(id = R.string.name)}: ${informacion.nombre}")
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Text(text = "${stringResource(id = R.string.lastname)}: ${informacion.apellido}")
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Text(text = "Sexo: ${informacion.sexo}")
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Text(text = "${stringResource(id = R.string.gender)}: ${informacion.fechaNacimiento}")
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Text(text = "${stringResource(id = R.string.EduLevel)}: ${informacion.grado}")
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Text(text = "${stringResource(id = R.string.country)}: ${informacion.pais}")
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Text(text = "${stringResource(id = R.string.city)}: ${informacion.ciudad}")
+                }
+
             }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
         }
-
-        item {
-            Text(text = "Apellido: ${informacion.apellido}")
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        item {
-            Text(text = "Sexo: ${informacion.sexo}")
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        item {
-            Text(text = "Fecha de nacimiento: ${informacion.fechaNacimiento}")
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(text = "Grado escolaridad: ${informacion.grado}")
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(text = "País: ${informacion.pais}")
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Text(text = "Ciudad: ${informacion.ciudad}")
-        }
-
-
-        }
+    }
 
 }

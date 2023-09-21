@@ -196,12 +196,7 @@ fun ContactDataScreen() {
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-<<<<<<< HEAD
-                Text(text = "Finalizar", color = Color.White)
-
-=======
                 Text(text = stringResource(id = R.string.submit), color = Color.White)
->>>>>>> 2ba35a903a2e30972033b2210699f8bad8ad1a81
             }
         }
 
