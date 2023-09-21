@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Labs20232-Gr01</string>
+    <string name="phone">Telefono</string>
+    <string name="dateOfBirth">Fecha de nacimiento</string>
+    <string name="Pick">Elegir</string>
+    <string name="EduLevel">Nivel de escolaridad</string>
+    <string name="PrimSchool">Primaria</string>
+    <string name="HighSchool">Secundaria</string>
+    <string name="College">Universidad</string>
+    <string name="address">Direccion</string>
+    <string name="email">Email</string>
+    <string name="country">Pais</string>
+    <string name="city">Ciudad</string>
+    <string name="submit">Enviar</string>
+    <string name="contactinfo">Informacion de contacto</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellido</string>
+    <string name="gender">Sexo</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+    <string name="next">Siguiente</string>
 </resources>

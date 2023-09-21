@@ -27,6 +27,9 @@ import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 
 val Paises = listOf(
     "Argentina",
@@ -97,7 +100,7 @@ fun ContactDataScreen() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = "Teléfono", keyboardType = KeyboardType.Phone)
+                ContactField(label = stringResource(id = R.string.phone), keyboardType = KeyboardType.Phone)
             }
             //Campo de texto Direccion
             Row(
@@ -110,7 +113,7 @@ fun ContactDataScreen() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = "Dirección", keyboardType = KeyboardType.Text, showSuggestions = false)
+                ContactField(label = stringResource(id = R.string.address), keyboardType = KeyboardType.Text, showSuggestions = false)
             }
             //Campo de texto Email
             Row(
@@ -123,7 +126,7 @@ fun ContactDataScreen() {
                     tint = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = "Email", keyboardType = KeyboardType.Email)
+                ContactField(label = stringResource(id = R.string.email), keyboardType = KeyboardType.Email)
             }
             //Campo de texto Paises
             Row(
@@ -139,7 +142,7 @@ fun ContactDataScreen() {
                 Spacer(modifier = Modifier.width(8.dp))
                 //Funcion de autocompletado con lista Paises
                 CAutocomplete(
-                    cname = "Pais",
+                    cname = stringResource(id = R.string.country),
                     cText = countryText,
                     onCTextChanged = { newText ->
                         countryText = newText
@@ -167,7 +170,7 @@ fun ContactDataScreen() {
                 Spacer(modifier = Modifier.width(8.dp))
                 //Funcion de autocompletado con lista Ciudades
                 CAutocomplete(
-                    cname = "Ciudad",
+                    cname = stringResource(id = R.string.city),
                     cText = cityText,
                     onCTextChanged = { newTxt ->
                         cityText = newTxt
@@ -189,7 +192,7 @@ fun ContactDataScreen() {
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(text = "Finalizar", color = Color.White)
+                Text(text = stringResource(id = R.string.submit), color = Color.White)
             }
         }
 
@@ -213,11 +216,7 @@ fun ContactField(label: String, keyboardType: KeyboardType, showSuggestions: Boo
             keyboardType = keyboardType,
             imeAction = ImeAction.Done
         ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                // Realiza acciones adicionales al completar la entrada de texto, si es necesario.
-            }
-        ),
+
 
     )
 }

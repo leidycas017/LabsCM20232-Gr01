@@ -43,10 +43,17 @@ import androidx.navigation.compose.composable
 import co.edu.udea.compumovil.gr01_20232.lab1.ui.theme.Labs20232Gr01Theme
 import java.util.Calendar
 import java.util.Date
-
+import java.util.Locale
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val locale = Locale("en") // Idioma predeterminado, español
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
         setContent {
             Labs20232Gr01Theme {
                 // A surface container using the 'background' color from the theme
@@ -105,12 +112,12 @@ fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Text(text = "Fecha de nacimiento: ${formattedDate.value}")
+        Text(text = stringResource(id = R.string.phone)+" : ${formattedDate.value}")
         Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
         }) {
-            Text(text = "Elegir")
+            Text(text = stringResource(id = R.string.Pick))
         }
     }
 
@@ -142,7 +149,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
             },
             placeholder = {
-                Text(text = "Grado de escolaridad")
+                Text(text = stringResource(id = R.string.Pick))
             },
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             modifier = Modifier.menuAnchor()
@@ -156,7 +163,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
         ) {
             DropdownMenuItem(
                 text = {
-                    Text(text = "Primaria")
+                    Text(text = stringResource(id = R.string.PrimSchool))
                 },
                 onClick = {
                     escolaridad = "Primaria"
@@ -166,7 +173,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
             )
             DropdownMenuItem(
                 text = {
-                    Text(text = "Secundaria")
+                    Text(text = stringResource(id = R.string.HighSchool))
                 },
                 onClick = {
                     escolaridad = "Secundaria"
@@ -176,7 +183,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
             )
             DropdownMenuItem(
                 text = {
-                    Text(text = "Universidad")
+                    Text(text = stringResource(id = R.string.College))
                 },
                 onClick = {
                     escolaridad = "Universidad"
