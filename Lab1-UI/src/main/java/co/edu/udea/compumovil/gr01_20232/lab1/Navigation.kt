@@ -44,6 +44,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -99,6 +100,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
     var nombre by rememberSaveable { mutableStateOf("") }
     var apellido by rememberSaveable{ mutableStateOf("") }
 
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -133,27 +135,30 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     item {
-                        LabeledTextField(stringResource(id = R.string.name), "*") { nombre = it }
+                        LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it }
                     }
                     item {
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                     item {
-                        LabeledTextField(stringResource(id = R.string.lastname), "*") {  apellido = it }
+                        LabeledTextField(stringResource(id = R.string.lastname), "*") {  informacion.apellido = it }
                     }
                 }
             }
         } else {
             item {
-                LabeledTextField(stringResource(id = R.string.name), "*") { nombre = it}
+                LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it}
             }
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
             item {
-                LabeledTextField(stringResource(id = R.string.lastname), "*") {apellido = it }
+                LabeledTextField(stringResource(id = R.string.lastname), "*") {informacion.apellido = it }
             }
         }
+
+        nombre = informacion.nombre.toString()
+        apellido = informacion.apellido.toString()
 
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -173,6 +178,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                     onOptionSelected = { selectedSex = if (it == "Masculino"||it == "Male") Sex.MALE else Sex.FEMALE },
                     selectedOption = if (selectedSex == Sex.MALE) stringResource(id = R.string.male) else stringResource(id = R.string.female)
                 )
+                informacion.sexo = selectedSex.toString()
             }
         }
 
@@ -184,6 +190,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
             showDatePicker(context) { selectedDate ->
                 fechaNacimiento = selectedDate
             }
+            informacion.fechaNacimiento = fechaNacimiento
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -213,6 +220,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                 EscolaridadDropdownMenu { selectedEscolaridad ->
                     escolaridadSeleccionada = selectedEscolaridad
                 }
+                informacion.grado = escolaridadSeleccionada
             }
         }
 
@@ -236,11 +244,6 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
             }
         }
     }
-    informacion.nombre = nombre
-    informacion.apellido = apellido
-    informacion.sexo = selectedSex.toString()
-    informacion.fechaNacimiento = fechaNacimiento
-    informacion.grado = escolaridadSeleccionada
 }
 
 

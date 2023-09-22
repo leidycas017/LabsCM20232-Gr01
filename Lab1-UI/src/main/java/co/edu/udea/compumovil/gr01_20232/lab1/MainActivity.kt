@@ -118,7 +118,7 @@ fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Text(text = stringResource(id = R.string.phone)+" : ${formattedDate.value}")
+        Text(text = stringResource(id = R.string.dateOfBirth)+" : ${formattedDate.value}")
         Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
