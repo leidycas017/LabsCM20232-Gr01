@@ -115,7 +115,7 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                 ),
                 title = {
                     Text(
-                        text = stringResource(id = R.string.contactinfo),
+                        text = stringResource(id =R.string.infopersonal),
                         color = Color.White
                     )
                 },
