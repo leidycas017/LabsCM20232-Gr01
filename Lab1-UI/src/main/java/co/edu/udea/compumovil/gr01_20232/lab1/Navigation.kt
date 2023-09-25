@@ -2,6 +2,7 @@ package co.edu.udea.compumovil.gr01_20232.lab1
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -234,7 +235,14 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                 onClick = {
                     // Llama a la función para imprimir la información
                     printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
-                    navController.navigate("pantalla2")
+                    if(informacion.nombre.isNullOrEmpty()
+                        || informacion.apellido.isNullOrEmpty()
+                        || informacion.fechaNacimiento.isNullOrEmpty()){
+                        Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
+                    }else{
+                        navController.navigate("pantalla2")
+                    }
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -351,6 +359,7 @@ private fun RadioButtonRow(options: List<String>, onOptionSelected: (String) -> 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen2(informacion: InformacionContacto, navController: NavHostController) {
+    val context = LocalContext.current
 
     // Estado para el texto del campo de países y de ciudad
     var countryText by rememberSaveable { mutableStateOf("") }
@@ -453,6 +462,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             modifier = Modifier.align(Alignment.CenterVertically)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "*")
                         //Funcion de autocompletado con lista Paises
                         CAutocomplete(
                             cname = stringResource(id = R.string.country),
@@ -467,6 +477,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             },
                             suggestedC = suggestedCountries
                         )
+                        informacion.pais = countryText
                     }
                     //Campo de texto Ciudades
                     Row(
@@ -481,6 +492,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
 
                         )
                         Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "*")
                         //Funcion de autocompletado con lista Ciudades
                         CAutocomplete(
                             cname = stringResource(id = R.string.city),
@@ -495,6 +507,7 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             },
                             suggestedC = suggestedCities
                         )
+                        informacion.ciudad = cityText
                     }
                     //Boton Finalizar
                     Button(
@@ -502,7 +515,12 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
                             // aqui se recuperaran los datos para imprimir en el logcat.
 
                             // Asigna los valores de los campos al mapa de datos
-                            navController.navigate("pantalla3")
+                            if(informacion.ciudad.isNullOrEmpty()
+                                || informacion.pais.isNullOrEmpty()){
+                                Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
+                            }else{
+                                navController.navigate("pantalla3")
+                            }
 
                         },
                         modifier = Modifier
@@ -517,9 +535,6 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
         }
     }
 
-
-    informacion.ciudad = cityText
-    informacion.pais = countryText
 }
 
 

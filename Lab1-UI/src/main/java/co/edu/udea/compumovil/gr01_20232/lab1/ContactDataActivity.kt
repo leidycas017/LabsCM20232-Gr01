@@ -135,12 +135,14 @@ fun ContactDataScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(text = "*")
                 Icon(
                     imageVector = Icons.Rounded.Map,
                     contentDescription = "Icono de paises",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
+
                 Spacer(modifier = Modifier.width(8.dp))
                 //Funcion de autocompletado con lista Paises
                 CAutocomplete(
@@ -157,6 +159,7 @@ fun ContactDataScreen() {
                     suggestedC = suggestedCountries
                 )
             }
+
             //Campo de texto Ciudades
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -173,7 +176,7 @@ fun ContactDataScreen() {
                 //Funcion de autocompletado con lista Ciudades
                 CAutocomplete(
                     cname = stringResource(id = R.string.city),
-                    cText = cityText,
+                    cText = cityText + "*",
                     onCTextChanged = { newTxt ->
                         cityText = newTxt
 
@@ -215,14 +218,16 @@ fun ContactField(label: String, keyboardType: KeyboardType, showSuggestions: Boo
             .padding(8.dp),
         value = text,
         onValueChange = { newText -> text = newText },
-        label = { Text(text = label) },
+        label = { Text(text = label
+        ) },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType,
             imeAction = ImeAction.Done
+
         ),
 
-
     )
+
 }
 
 //Funcion Autocompletado

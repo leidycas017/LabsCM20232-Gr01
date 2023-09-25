@@ -46,6 +46,7 @@ import java.util.Date
 import java.util.Locale
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +120,11 @@ fun showDatePicker(context: Context, onDateSelected: (String) -> Unit){
         )
 
         Text(text = stringResource(id = R.string.dateOfBirth)+" : ${formattedDate.value}")
+        Text(
+            text = "*",
+            color = Color.Red,
+            modifier = Modifier.padding(start = 4.dp)
+        )
         Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
             datePickerDialog.show()
