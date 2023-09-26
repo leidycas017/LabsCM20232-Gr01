@@ -65,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
+import android.util.Log
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -308,7 +309,7 @@ private fun LabeledTextField(label: String, requiredSymbol: String, onValueChang
                 keyboardType = KeyboardType.Text,
                 capitalization = KeyboardCapitalization.Words,
                 autoCorrect = false,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Next
             )
         )
     }
@@ -541,7 +542,14 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen3(informacion: InformacionContacto, navController: NavHostController){
-
+    //Imprimir informacion en el Logcat
+    Log.d("Datos", "Nombre: ${informacion.nombre}")
+    Log.d("Datos", "Apellido: ${informacion.apellido}")
+    Log.d("Datos", "Sexo: ${informacion.sexo}")
+    Log.d("Datos", "Fecha de Nacimiento: ${informacion.fechaNacimiento}")
+    Log.d("Datos", "Nivel Educativo: ${informacion.grado}")
+    Log.d("Datos", "País: ${informacion.pais}")
+    Log.d("Datos", "Ciudad: ${informacion.ciudad}")
     Box(
         modifier = Modifier
             .fillMaxSize()

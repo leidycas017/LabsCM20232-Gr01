@@ -48,8 +48,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import android.view.WindowManager
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         super.onCreate(savedInstanceState)
         val locale = Locale("en") // Idioma predeterminado, español
         Locale.setDefault(locale)
@@ -173,32 +175,35 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
                 isExpanded = false
             }
         ) {
+            val primariaText = stringResource(id = R.string.PrimSchool)
+            val secundariaText = stringResource(id = R.string.HighSchool)
+            val universidadtext = stringResource(id = R.string.College)
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.PrimSchool))
+                    Text(text = primariaText)
                 },
                 onClick = {
-                    escolaridad = "Primaria"
+                    escolaridad = primariaText
                     onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }
             )
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.HighSchool))
+                    Text(text = secundariaText)
                 },
                 onClick = {
-                    escolaridad = "Secundaria"
+                    escolaridad = secundariaText
                     onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }
             )
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.College))
+                    Text(text = universidadtext)
                 },
                 onClick = {
-                    escolaridad = "Universidad"
+                    escolaridad = universidadtext
                     onEscolaridadSelected(escolaridad)
                     isExpanded = false
                 }

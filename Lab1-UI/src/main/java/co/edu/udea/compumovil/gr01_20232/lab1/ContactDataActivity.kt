@@ -67,145 +67,9 @@ val Ciudades = listOf(
 class ContactDataActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ContactDataScreen()
-        }
     }
 }
 
-@Composable
-fun ContactDataScreen() {
-    // Estado para el texto del campo de países y de ciudad
-    var countryText by remember { mutableStateOf("") }
-    var cityText by remember { mutableStateOf("") }
-
-    // Estado para almacenar las sugerencias de países y ciudades
-    var suggestedCountries by remember { mutableStateOf(emptyList<String>()) }
-    var suggestedCities by remember { mutableStateOf(emptyList<String>()) }
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            //Campo de texto Telefono
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Phone,
-                    contentDescription = "Icono de telefono",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = stringResource(id = R.string.phone), keyboardType = KeyboardType.Phone)
-            }
-            //Campo de texto Direccion
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.LocationOn,
-                    contentDescription = "Icono de ubicacion",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = stringResource(id = R.string.address), keyboardType = KeyboardType.Text, showSuggestions = false)
-            }
-            //Campo de texto Email
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Email,
-                    contentDescription = "Icono de Email",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                ContactField(label = stringResource(id = R.string.email), keyboardType = KeyboardType.Email)
-            }
-            //Campo de texto Paises
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "*")
-                Icon(
-                    imageVector = Icons.Rounded.Map,
-                    contentDescription = "Icono de paises",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-                //Funcion de autocompletado con lista Paises
-                CAutocomplete(
-                    cname = stringResource(id = R.string.country),
-                    cText = countryText,
-                    onCTextChanged = { newText ->
-                        countryText = newText
-
-                        // Filtra las sugerencias basadas en la entrada de texto
-                        suggestedCountries = Paises.filter { country ->
-                            country.contains(newText, ignoreCase = true)
-                        }
-                    },
-                    suggestedC = suggestedCountries
-                )
-            }
-
-            //Campo de texto Ciudades
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.LocationCity,
-                    contentDescription = "Icono de ciudad",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.align(Alignment.CenterVertically)
-
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                //Funcion de autocompletado con lista Ciudades
-                CAutocomplete(
-                    cname = stringResource(id = R.string.city),
-                    cText = cityText + "*",
-                    onCTextChanged = { newTxt ->
-                        cityText = newTxt
-
-                        // Filtra las sugerencias basadas en la entrada de texto
-                        suggestedCities = Ciudades.filter { city ->
-                            city.contains(newTxt, ignoreCase = true)
-                        }
-                    },
-                    suggestedC = suggestedCities
-                )
-            }
-            //Boton Finalizar
-            Button(
-                onClick = {
-                    // aqui se recuperaran los datos para imprimir en el logcat.
-
-                    // Asigna los valores de los campos al mapa de datos
-
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(text = stringResource(id = R.string.submit), color = Color.White)
-            }
-        }
-
-    }
-}
 
 @Composable
 //formato campos de texto
@@ -222,7 +86,7 @@ fun ContactField(label: String, keyboardType: KeyboardType, showSuggestions: Boo
         ) },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Next
 
         ),
 
