@@ -93,168 +93,233 @@ data class InformacionContacto(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen1(informacion: InformacionContacto, navController: NavHostController) {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-    val context = LocalContext.current
-    var selectedSex by rememberSaveable { mutableStateOf<Sex?>(null) }
-    var escolaridadSeleccionada by rememberSaveable { mutableStateOf("") }
-    var fechaNacimiento by rememberSaveable { mutableStateOf("") }
-    var nombre by rememberSaveable { mutableStateOf("") }
-    var apellido by rememberSaveable{ mutableStateOf("") }
+        val configuration = LocalConfiguration.current
+        val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val context = LocalContext.current
+        var selectedSex by rememberSaveable { mutableStateOf<Sex?>(null) }
+        var escolaridadSeleccionada by rememberSaveable { mutableStateOf("") }
+        var fechaNacimiento by rememberSaveable { mutableStateOf("") }
+        var nombre by rememberSaveable { mutableStateOf("") }
+        var apellido by rememberSaveable{ mutableStateOf("") }
 
 
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
-        item {
-            TopAppBar(
-                // Customize Colors here
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        text = stringResource(id =R.string.infopersonal),
-                        color = Color.White
-                    )
-                },
-            )
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+        // TopAppBar sin margen
+        TopAppBar(
+            // Customize Colors here
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                Text(
+                    text = stringResource(id =R.string.infopersonal),
+                    color = Color.White
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 0.dp) // Eliminamos el margen superior del TopAppBar
+        )
 
-        // Mostrar los elementos dependiendo de la orientación
-        if (isLandscape) {
-            item {
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    item {
-                        LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it }
-                    }
-                    item {
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
-                    item {
-                        LabeledTextField(stringResource(id = R.string.lastname), "*") {  informacion.apellido = it }
-                    }
-                }
-            }
-        } else {
-            item {
-                LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it}
-            }
+        // Padding general para LazyColumn y sus elementos
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp) // Aplicamos un padding lateral general
+        ) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
-            item {
-                LabeledTextField(stringResource(id = R.string.lastname), "*") {informacion.apellido = it }
-            }
-        }
 
-        nombre = informacion.nombre.toString()
-        apellido = informacion.apellido.toString()
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(stringResource(id = R.string.gender)+" :")
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                RadioButtonRow(
-                    options = listOf(stringResource(id = R.string.male), stringResource(id = R.string.female)),
-                    onOptionSelected = { selectedSex = if (it == "Masculino"||it == "Male") Sex.MALE else Sex.FEMALE },
-                    selectedOption = if (selectedSex == Sex.MALE) stringResource(id = R.string.male) else stringResource(id = R.string.female)
-                )
-                informacion.sexo = selectedSex.toString()
-            }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            showDatePicker(context) { selectedDate ->
-                fechaNacimiento = selectedDate
-            }
-            informacion.fechaNacimiento = fechaNacimiento
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "$fechaNacimiento")
-            }
-        }
-
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Book,
-                    contentDescription = "Icono de persona",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-
-                Spacer(modifier = Modifier.width(8.dp))
-                EscolaridadDropdownMenu { selectedEscolaridad ->
-                    escolaridadSeleccionada = selectedEscolaridad
-                }
-                informacion.grado = escolaridadSeleccionada
-            }
-        }
-
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            Button(
-                onClick = {
-                    // Llama a la función para imprimir la información
-                    printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
-                    if(informacion.nombre.isNullOrEmpty()
-                        || informacion.apellido.isNullOrEmpty()
-                        || informacion.fechaNacimiento.isNullOrEmpty()){
-                        Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
-                    }else{
-                        navController.navigate("pantalla2")
+            // Mostrar los elementos dependiendo de la orientación
+            if (isLandscape) {
+                item {
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        item {
+                            LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it }
+                        }
+                        item {
+                            Spacer(modifier = Modifier.width(16.dp))
+                        }
+                        item {
+                            LabeledTextField(stringResource(id = R.string.lastname), "*") { informacion.apellido = it }
+                        }
                     }
+                }
 
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(text = stringResource(id = R.string.next))
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp), // Padding lateral para centrar los botones de radio
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(stringResource(id = R.string.gender) + ":", modifier = Modifier.padding(end = 8.dp))
+                        RadioButton(
+                            selected = selectedSex == Sex.MALE,
+                            onClick = { selectedSex = Sex.MALE },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(stringResource(id = R.string.male), modifier = Modifier.padding(end = 16.dp))
+                        RadioButton(
+                            selected = selectedSex == Sex.FEMALE,
+                            onClick = { selectedSex = Sex.FEMALE },
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                        Text(stringResource(id = R.string.female))
+                    }
+                }
+
+            } else {
+                item {
+                    LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it}
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    LabeledTextField(stringResource(id = R.string.lastname), "*") {informacion.apellido = it }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text(stringResource(id = R.string.gender)+" :")
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        RadioButtonRow(
+                            options = listOf(stringResource(id = R.string.male), stringResource(id = R.string.female)),
+                            onOptionSelected = { selectedSex = if (it == "Masculino" || it == "Male") Sex.MALE else Sex.FEMALE },
+                            selectedOption = if (selectedSex == Sex.MALE) stringResource(id = R.string.male) else stringResource(id = R.string.female)
+                        )
+                        informacion.sexo = selectedSex.toString()
+                    }
+                }
+
             }
+
+            nombre = informacion.nombre.toString()
+            apellido = informacion.apellido.toString()
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            item {
+                showDatePicker(context) { selectedDate ->
+                    fechaNacimiento = selectedDate
+                }
+                informacion.fechaNacimiento = fechaNacimiento
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "$fechaNacimiento")
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Book,
+                        contentDescription = "Icono de persona",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                    EscolaridadDropdownMenu { selectedEscolaridad ->
+                        escolaridadSeleccionada = selectedEscolaridad
+                    }
+                    informacion.grado = escolaridadSeleccionada
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            if (isLandscape) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.BottomEnd // Coloca el botón en la esquina inferior derecha
+                    ) {
+                        Button(
+                            onClick = {
+                                // Llama a la función para imprimir la información
+                                printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
+                                if(informacion.nombre.isNullOrEmpty()
+                                    || informacion.apellido.isNullOrEmpty()
+                                    || informacion.fechaNacimiento.isNullOrEmpty()){
+                                    Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    navController.navigate("pantalla2")
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .height(50.dp)
+                        ) {
+                            Text(text = stringResource(id = R.string.next))
+                        }
+                    }
+                }
+
+            } else {
+                item {
+                    Button(
+                        onClick = {
+                            // Llama a la función para imprimir la información
+                            printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
+                            if(informacion.nombre.isNullOrEmpty()
+                                || informacion.apellido.isNullOrEmpty()
+                                || informacion.fechaNacimiento.isNullOrEmpty()){
+                                Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
+                            }else{
+                                navController.navigate("pantalla2")
+                            }
+
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(text = stringResource(id = R.string.next))
+                    }
+                }
+            }
+
         }
     }
 }
-
 
 
 fun printContactInformation(nombre: String, apellido: String, sexo: Sex?, fechaNacimiento: String, escolaridad: String) {
