@@ -101,6 +101,9 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
         var fechaNacimiento by rememberSaveable { mutableStateOf("") }
         var nombre by rememberSaveable { mutableStateOf("") }
         var apellido by rememberSaveable{ mutableStateOf("") }
+        var nombreRemember: String? = informacion.nombre
+        var apellidoRemember: String? = informacion.apellido
+
 
 
     Column(
@@ -145,13 +148,16 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         item {
-                            LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it }
+
+                            LabeledTextField(nombreGlobal, stringResource(id = R.string.name), "*") { informacion.nombre = it; nombreGlobal=it}
                         }
+
                         item {
                             Spacer(modifier = Modifier.width(16.dp))
                         }
                         item {
-                            LabeledTextField(stringResource(id = R.string.lastname), "*") { informacion.apellido = it }
+
+                            LabeledTextField(apellidoGlobal, stringResource(id = R.string.lastname), "*") { informacion.apellido = it; apellidoGlobal=it}
                         }
                     }
                 }
@@ -186,13 +192,13 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
 
             } else {
                 item {
-                    LabeledTextField(stringResource(id = R.string.name), "*") { informacion.nombre = it}
+                    LabeledTextField(nombreGlobal, stringResource(id = R.string.name), "*") { informacion.nombre = it; nombreGlobal=it}
                 }
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 item {
-                    LabeledTextField(stringResource(id = R.string.lastname), "*") {informacion.apellido = it }
+                    LabeledTextField(apellidoGlobal,stringResource(id = R.string.lastname), "*") {informacion.apellido = it; apellidoGlobal=it}
                 }
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -256,8 +262,10 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                     Spacer(modifier = Modifier.width(8.dp))
                     EscolaridadDropdownMenu { selectedEscolaridad ->
                         escolaridadSeleccionada = selectedEscolaridad
+                        gradoGlobal = selectedEscolaridad
                     }
                     informacion.grado = escolaridadSeleccionada
+
                 }
             }
 
@@ -339,8 +347,13 @@ fun printContactInformation(nombre: String, apellido: String, sexo: Sex?, fechaN
 
 
 @Composable
-private fun LabeledTextField(label: String, requiredSymbol: String, onValueChange: (String) -> Unit) {
-    var text by rememberSaveable { mutableStateOf("") }
+private fun LabeledTextField(
+    remember: String?,
+    label: String,
+    requiredSymbol: String,
+    onValueChange: (String) -> Unit
+) {
+    var text by rememberSaveable { mutableStateOf(remember) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -354,29 +367,31 @@ private fun LabeledTextField(label: String, requiredSymbol: String, onValueChang
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        TextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onValueChange(it)
-            },
-            label = {
-                Row {
-                    Text(text = label)
-                    Text(
-                        text = requiredSymbol,
-                        color = Color.Red,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                }
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                capitalization = KeyboardCapitalization.Words,
-                autoCorrect = false,
-                imeAction = ImeAction.Next
+        text?.let {
+            TextField(
+                value = it,
+                onValueChange = {
+                    text = it
+                    onValueChange(it)
+                },
+                label = {
+                    Row {
+                        Text(text = label)
+                        Text(
+                            text = requiredSymbol,
+                            color = Color.Red,
+                            modifier = Modifier.padding(start = 4.dp)
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    capitalization = KeyboardCapitalization.Words,
+                    autoCorrect = false,
+                    imeAction = ImeAction.Next
+                )
             )
-        )
+        }
     }
 }
 

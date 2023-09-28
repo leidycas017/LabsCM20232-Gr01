@@ -152,7 +152,7 @@ fun EscolaridadDropdownMenu(onEscolaridadSelected: (String) -> Unit) {
         }
     ) {
         var escolaridad by rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf(gradoGlobal)
         }
 
         TextField(
