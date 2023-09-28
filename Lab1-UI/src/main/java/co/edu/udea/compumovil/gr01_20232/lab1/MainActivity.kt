@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         super.onCreate(savedInstanceState)
-        val locale = Locale("en") // Idioma predeterminado, español
+        val locale = Locale("en") // Idioma predeterminado
         Locale.setDefault(locale)
         val config = resources.configuration
         config.setLocale(locale)
