@@ -284,8 +284,9 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                             onClick = {
                                 // Llama a la función para imprimir la información
                                 printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
-                                if(informacion.nombre.isNullOrEmpty()
-                                    || informacion.apellido.isNullOrEmpty()
+
+                                if(nombreGlobal.isNullOrEmpty()
+                                    || apellidoGlobal.isNullOrEmpty()
                                     || informacion.fechaNacimiento.isNullOrEmpty()){
                                     Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
                                 }else{
@@ -307,8 +308,8 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
                         onClick = {
                             // Llama a la función para imprimir la información
                             printContactInformation(nombre, apellido, selectedSex, fechaNacimiento, escolaridadSeleccionada)
-                            if(informacion.nombre.isNullOrEmpty()
-                                || informacion.apellido.isNullOrEmpty()
+                            if(nombreGlobal.isNullOrEmpty()
+                                || apellidoGlobal.isNullOrEmpty()
                                 || informacion.fechaNacimiento.isNullOrEmpty()){
                                 Toast.makeText(context, "Hay campos sin llenar", Toast.LENGTH_SHORT).show()
                             }else{
@@ -332,8 +333,8 @@ fun Screen1(informacion: InformacionContacto, navController: NavHostController) 
 
 fun printContactInformation(nombre: String, apellido: String, sexo: Sex?, fechaNacimiento: String, escolaridad: String) {
     println("Información de contacto:")
-    println("Nombre: $nombre")
-    println("Apellido: $apellido")
+    println("Nombre: $nombreGlobal")
+    println("Apellido: $apellidoGlobal")
     println("Sexo: ${sexo?.name ?: "No especificado"}")
     println("Fecha de Nacimiento: $fechaNacimiento")
     println("Escolaridad: $escolaridad")
@@ -644,8 +645,8 @@ fun Screen2(informacion: InformacionContacto, navController: NavHostController) 
 @Composable
 fun Screen3(informacion: InformacionContacto, navController: NavHostController){
     //Imprimir informacion en el Logcat
-    Log.d("Datos", "Nombre: ${informacion.nombre}")
-    Log.d("Datos", "Apellido: ${informacion.apellido}")
+    Log.d("Datos", "Nombre: ${nombreGlobal}")
+    Log.d("Datos", "Apellido: ${apellidoGlobal}")
     Log.d("Datos", "Sexo: ${informacion.sexo}")
     Log.d("Datos", "Fecha de Nacimiento: ${informacion.fechaNacimiento}")
     Log.d("Datos", "Nivel Educativo: ${informacion.grado}")
@@ -699,7 +700,7 @@ fun Screen3(informacion: InformacionContacto, navController: NavHostController){
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "${stringResource(id = R.string.name)}: ${informacion.nombre}")
+                        Text(text = "${stringResource(id = R.string.name)}: ${nombreGlobal}")
                     }
                 }
 
@@ -708,7 +709,7 @@ fun Screen3(informacion: InformacionContacto, navController: NavHostController){
                 }
 
                 item {
-                    Text(text = "${stringResource(id = R.string.lastname)}: ${informacion.apellido}")
+                    Text(text = "${stringResource(id = R.string.lastname)}: ${apellidoGlobal}")
                 }
 
                 item {
